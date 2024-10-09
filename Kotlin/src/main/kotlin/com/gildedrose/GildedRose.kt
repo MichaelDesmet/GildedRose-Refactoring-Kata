@@ -7,6 +7,7 @@ class GildedRose(var items: List<Item>) {
             when {
                 item.name == "Aged Brie" -> updateAgedBrie(item)
                 item.name.startsWith("Backstage passes") -> updateBackstagePass(item)
+                item.name.startsWith("Conjured") -> updateConjuredItem(item)
                 item.name != "Sulfuras, Hand of Ragnaros" -> updateNormalItem(item)
             }
             decrementSellIn(item)
@@ -45,6 +46,17 @@ class GildedRose(var items: List<Item>) {
     private fun updateNormalItem(item: Item) {
         if (item.quality > 0) {
             item.quality--
+        }
+    }
+
+     private fun updateConjuredItem(item: Item) {
+         if (item.quality > 0) {
+            item.quality -= 2
+            if (item.quality < 0) item.quality = 0
+        }
+        if (item.sellIn < 0 && item.quality > 0) {
+            item.quality -= 2
+            if (item.quality < 0) item.quality = 0
         }
     }
 
